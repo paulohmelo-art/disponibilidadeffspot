@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Formulário de Contato</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --ink: #1a1a2e;
+    --ink-muted: #4a4a6a;
+    --ink-light: #8888aa;
+    --surface: #f8f7f4;
+    --white: #ffffff;
+    --accent: #2563eb;
+    --accent-light: #eff6ff;
+    --success: #059669;
+    --success-light: #ecfdf5;
+    --error: #dc2626;
+    --error-light: #fef2f2;
+    --border: #e2e0db;
+    --border-focus: #2563eb;
+    --radius: 10px;
+  }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--surface);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem 1rem;
+    color: var(--ink);
+  }
+
+  .page-wrapper {
+    width: 100%;
+    max-width: 600px;
+  }
+
+  .header {
+    margin-bottom: 2.5rem;
+    padding-bottom: 2rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .header-eyebrow {
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 0.75rem;
+  }
+
+  .header h1 {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(2rem, 5vw, 2.8rem);
+    line-height: 1.15;
+    color: var(--ink);
+    margin-bottom: 0.75rem;
+  }
+
+  .header h1 em {
+    font-style: italic;
+    color: var(--accent);
+  }
+
+  .header p {
+    font-size: 15px;
+    color: var(--ink-muted);
+    line-height: 1.6;
+    font-weight: 300;
+  }
+
+  .form-card {
+    background: var(--white);
+    border-radius: 16px;
+    border: 1px solid var(--border);
+    padding: 2.5rem;
+    box-shadow: 0 2px 24px rgba(26,26,46,0.06);
+  }
+
+  .form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.25rem;
+  }
+
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .form-group.full-width {
+    grid-column: 1 / -1;
+  }
+
+  label {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--ink);
+    letter-spacing: 0.01em;
+  }
+
+  label .required {
+    color: var(--accent);
+    margin-left: 2px;
+  }
+
+  input, select, textarea {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px;
+    font-weight: 400;
+    color: var(--ink);
+    background: var(--surface);
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius);
+    padding: 0.75rem 1rem;
+    width: 100%;
+    transition: border-color 0.2s, background 0.2s, box-shadow 0.2s;
+    outline: none;
+    -webkit-appearance: none;
+  }
+
+  input::placeholder, textarea::placeholder {
+    color: var(--ink-light);
+    font-weight: 300;
+  }
+
+  input:hover, select:hover, textarea:hover {
+    border-color: #b8b5be;
+  }
+
+  input:focus, select:focus, textarea:focus {
+    border-color: var(--border-focus);
+    background: var(--white);
+    box-shadow: 0 0 0 3px rgba(37,99,235,0.1);
+  }
+
+  input:invalid:not(:placeholder-shown), textarea:invalid:not(:placeholder-shown) {
+    border-color: var(--error);
+  }
+
+  select {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%238888aa' stroke-width='2'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    padding-right: 2.5rem;
+    cursor: pointer;
+  }
+
+  textarea {
+    resize: vertical;
+    min-height: 130px;
+    line-height: 1.6;
+  }
+
+  .char-count {
+    font-size: 12px;
+    color: var(--ink-light);
+    text-align: right;
+    margin-top: -2px;
+  }
+
+  .char-count.near-limit { color: var(--error); }
+
+  .privacy-note {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    font-size: 13px;
+    color: var(--ink-muted);
+    line-height: 1.5;
+    padding: 1rem;
+    background: var(--accent-light);
+    border-radius: var(--radius);
+    border: 1px solid #dbeafe;
+    grid-column: 1 / -1;
+  }
+
+  .privacy-note svg { flex-shrink: 0; margin-top: 1px; color: var(--accent); }
+
+  .submit-btn {
+    grid-column: 1 / -1;
+    background: var(--ink);
+    color: #fff;
+    border: none;
+    border-radius: var(--radius);
+    padding: 0.9rem 2rem;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px;
+    font-weight: 500;
+    cursor: pointer;
+    width: 100%;
+    transition: background 0.2s, transform 0.15s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    letter-spacing: 0.01em;
+  }
+
+  .submit-btn:hover { background: #2a2a4e; }
+  .submit-btn:active { transform: scale(0.99); }
+  .submit-btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+
+  .spinner {
+    width: 16px; height: 16px;
+    border: 2px solid rgba(255,255,255,0.3);
+    border-top-color: #fff;
+    border-radius: 50%;
+    animation: spin 0.7s linear infinite;
+    display: none;
+  }
+  .submit-btn.loading .spinner { display: block; }
+  .submit-btn.loading .btn-text { opacity: 0.8; }
+
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  .toast {
+    display: none;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 1.25rem 1.5rem;
+    border-radius: var(--radius);
+    font-size: 14px;
+    line-height: 1.5;
+    margin-top: 1.5rem;
+    animation: slideIn 0.3s ease;
+  }
+
+  .toast.success {
+    display: flex;
+    background: var(--success-light);
+    border: 1px solid #a7f3d0;
+    color: #065f46;
+  }
+
+  .toast.error {
+    display: flex;
+    background: var(--error-light);
+    border: 1px solid #fecaca;
+    color: #991b1b;
+  }
+
+  .toast svg { flex-shrink: 0; margin-top: 1px; }
+
+  @keyframes slideIn {
+    from { opacity: 0; transform: translateY(-8px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .footer-note {
+    text-align: center;
+    font-size: 12px;
+    color: var(--ink-light);
+    margin-top: 1.5rem;
+    font-weight: 300;
+  }
+
+  @media (max-width: 520px) {
+    .form-card { padding: 1.75rem 1.25rem; }
+    .form-grid { grid-template-columns: 1fr; }
+    .form-group.full-width, .privacy-note, .submit-btn { grid-column: 1; }
+  }
+</style>
+</head>
+<body>
+
+<main class="page-wrapper" role="main">
+  <header class="header">
+    <p class="header-eyebrow">Entre em contato</p>
+    <h1>Fale <em>conosco</em></h1>
+    <p>Preencha o formulário abaixo. Respondemos em até 24 horas úteis.</p>
+  </header>
+
+  <div class="form-card">
+    <form id="contact-form" novalidate>
+      <div class="form-grid">
+
+        <div class="form-group">
+          <label for="nome">Nome <span class="required" aria-hidden="true">*</span></label>
+          <input type="text" id="nome" name="nome" placeholder="Seu nome completo"
+            autocomplete="name" required aria-required="true">
+        </div>
+
+        <div class="form-group">
+          <label for="email">E-mail <span class="required" aria-hidden="true">*</span></label>
+          <input type="email" id="email" name="email" placeholder="voce@email.com"
+            autocomplete="email" required aria-required="true">
+        </div>
+
+        <div class="form-group">
+          <label for="telefone">Telefone</label>
+          <input type="tel" id="telefone" name="telefone" placeholder="(00) 00000-0000"
+            autocomplete="tel" inputmode="tel">
+        </div>
+
+        <div class="form-group">
+          <label for="assunto">Assunto <span class="required" aria-hidden="true">*</span></label>
+          <select id="assunto" name="assunto" required aria-required="true">
+            <option value="" disabled selected>Selecione...</option>
+            <option value="informacao">Informação geral</option>
+            <option value="suporte">Suporte técnico</option>
+            <option value="comercial">Proposta comercial</option>
+            <option value="parceria">Parceria</option>
+            <option value="outro">Outro</option>
+          </select>
+        </div>
+
+        <div class="form-group full-width">
+          <label for="mensagem">Mensagem <span class="required" aria-hidden="true">*</span></label>
+          <textarea id="mensagem" name="mensagem" placeholder="Descreva sua dúvida ou necessidade..."
+            maxlength="1000" required aria-required="true" aria-describedby="char-count"></textarea>
+          <span class="char-count" id="char-count" aria-live="polite">0 / 1000</span>
+        </div>
+
+        <div class="privacy-note" role="note">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+          </svg>
+          <span>Seus dados são armazenados com segurança e utilizados somente para responder à sua mensagem, conforme nossa política de privacidade.</span>
+        </div>
+
+        <button type="submit" class="submit-btn" id="submit-btn">
+          <div class="spinner" aria-hidden="true"></div>
+          <span class="btn-text">Enviar mensagem →</span>
+        </button>
+
+      </div>
+    </form>
+
+    <div class="toast" id="toast" role="alert" aria-live="assertive"></div>
+  </div>
+
+  <p class="footer-note">As respostas são salvas automaticamente no Google Sheets.</p>
+</main>
+
+<script>
+  // ┌─────────────────────────────────────────────────────┐
+  // │  COLE AQUI A URL DO SEU GOOGLE APPS SCRIPT          │
+  // └─────────────────────────────────────────────────────┘
+  const APPS_SCRIPT_URL = "https://script.google.com/a/macros/mercadolivre.com/s/AKfycbwHo7KZ0_lTgwTmgZo-hq4IB16Kl_bqwicQ_YEdl4Cwf-0YvJxXudgCW-Q1P32NPAkr/exec";
+
+  // Contador de caracteres
+  const textarea = document.getElementById('mensagem');
+  const charCount = document.getElementById('char-count');
+  textarea.addEventListener('input', () => {
+    const len = textarea.value.length;
+    charCount.textContent = `${len} / 1000`;
+    charCount.classList.toggle('near-limit', len > 900);
+  });
+
+  // Máscara de telefone
+  document.getElementById('telefone').addEventListener('input', function() {
+    let v = this.value.replace(/\D/g, '').slice(0, 11);
+    if (v.length > 10) v = v.replace(/^(\d{2})(\d{5})(\d{4})$/, '($1) $2-$3');
+    else if (v.length > 6) v = v.replace(/^(\d{2})(\d{4})(\d*)$/, '($1) $2-$3');
+    else if (v.length > 2) v = v.replace(/^(\d{2})(\d*)$/, '($1) $2');
+    this.value = v;
+  });
+
+  // Envio do formulário
+  document.getElementById('contact-form').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    if (!this.checkValidity()) {
+      this.reportValidity();
+      return;
+    }
+
+    if (APPS_SCRIPT_URL === "https://script.google.com/a/macros/mercadolivre.com/s/AKfycbwHo7KZ0_lTgwTmgZo-hq4IB16Kl_bqwicQ_YEdl4Cwf-0YvJxXudgCW-Q1P32NPAkr/exec") {
+      showToast('error', 'Configure a URL do Apps Script no arquivo HTML antes de enviar.');
+      return;
+    }
+
+    const btn = document.getElementById('submit-btn');
+    btn.disabled = true;
+    btn.classList.add('loading');
+    btn.querySelector('.btn-text').textContent = 'Enviando...';
+    hideToast();
+
+    const data = {
+      nome: document.getElementById('nome').value.trim(),
+      email: document.getElementById('email').value.trim(),
+      telefone: document.getElementById('telefone').value.trim(),
+      assunto: document.getElementById('assunto').value,
+      mensagem: document.getElementById('mensagem').value.trim(),
+      data: new Date().toLocaleString('pt-BR', { timeZone: 'America/Sao_Paulo' })
+    };
+
+    try {
+      await fetch(APPS_SCRIPT_URL, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+      });
+      showToast('success', '✓ Mensagem enviada com sucesso! Entraremos em contato em breve.');
+      this.reset();
+      charCount.textContent = '0 / 1000';
+    } catch (err) {
+      showToast('error', 'Erro ao enviar. Verifique sua conexão e tente novamente.');
+    } finally {
+      btn.disabled = false;
+      btn.classList.remove('loading');
+      btn.querySelector('.btn-text').textContent = 'Enviar mensagem →';
+    }
+  });
+
+  function showToast(type, msg) {
+    const el = document.getElementById('toast');
+    const icon = type === 'success'
+      ? `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>`
+      : `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>`;
+    el.className = `toast ${type}`;
+    el.innerHTML = icon + `<span>${msg}</span>`;
+    el.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }
+
+  function hideToast() {
+    document.getElementById('toast').className = 'toast';
+  }
+</script>
+</body>
+</html>
